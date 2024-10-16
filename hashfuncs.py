@@ -40,12 +40,12 @@ def collisionSHA256(string_length, bits_to_truncate_to):
 if __name__ == "__main__":
     # **********Task 1 (a)**********
     init_string = "Hey im in CSC 321, this hacking stuff is cool!"
-    print(f"Hash of string '{init_string}' is: {hashSHA256(init_string)}\n")
+    print(f"TASK 1(a)\nHash of string '{init_string}' is: {hashSHA256(init_string)}\n")
 
     # **********Task 1 (b)**********
     # Hamming distance between two strings is 1 bit
     pairs = [("hello", "yello"), ("hello", "hella"), ("bet", "set"), ("sack", "hack")]
-
+    print("TASK 1(b)")
     for pair in pairs:
         hash1 = hashSHA256(pair[0])
         hash2 = hashSHA256(pair[1])
@@ -54,10 +54,11 @@ if __name__ == "__main__":
 
     # **********Task 1 (c)**********
     # Truncate the hash to a desired amount of bits
+    print("TASK 1(c)")
     bits_to_truncate_to = 20
     print(f"Truncated hash of string '{init_string}' to {bits_to_truncate_to} bits: {hashSHA256_truncated(init_string, bits_to_truncate_to)}\n")
     
     # Find collisions with random strings given a string length and number of bits to truncate to
     string_length = 20
     output = collisionSHA256(string_length, bits_to_truncate_to)
-    print(f"Collision found between strings: {output[0], output[1]},\nand their hashes are: {output[2], output[3]} respectively\n")
+    print(f"Collision found between strings: {output[0], output[1]},\nand their hashes are: {output[2], output[3]} respectively")
