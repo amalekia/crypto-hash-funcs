@@ -13,18 +13,21 @@ def parse_shadow_entry(entry):
     hash_value = salt_hash[22:]
     return user, algo, int(work_factor), salt, hash_value
 
-def crack_password(user, salt, hash_value, word_list):
+def crack_password(user, work_factor, salt, hash_value, word_list):
+    # Prepare the salt for comparison, dynamically using the work factor
+    bcrypt_salt = f"$2b${work_factor:02}${salt}".encode('utf-8')  # Use the correct cost factor
     for word in word_list:
         # Hash the word with the extracted salt
-        hashed = bcrypt.hashpw(word.encode('utf-8'), f"$2b$08${salt}".encode('utf-8'))
-        # Compare the generated hash with the hash value
-        if hashed.decode('utf-8') == f"$2b$08${salt}{hash_value}":
+        hashed = bcrypt.hashpw(word.encode('utf-8'), bcrypt_salt)
+        # Compare the generated hash with the full original bcrypt hash
+        if hashed.decode('utf-8') == f"$2b${work_factor:02}${salt}{hash_value}":
             return word
     return None
 
+
 # Read shadow file (replace with actual file path)
 shadow_file = """
-               Bilbo:$2b$08$L.z8uq99JkFAvX/Q1jGRI.TzrHIIxWMoRi/VzO1sj/UvVFPgW8dW
+               Bilbo:$2b$08$L.z8uq99JkFAvX/Q1jGRI.TzrHIIxWMoRi/VzO1sj/UvVFPgW8dW.
                Gandalf:$2b$08$J9FW66ZdPI2nrIMcOxFYI.q2PW6mqALUl2/uFvV9OFNPmHGNPa6YC 
                Thorin:$2b$08$J9FW66ZdPI2nrIMcOxFYI.6B7jUcPdnqJz4tIUwKBu8lNMs5NdT9q
                Fili:$2b$09$M9xNRFBDn0pUkPKIVCSBzuwNDDNTMWlvn7lezPr8IwVUsJbys3YZm
@@ -51,7 +54,7 @@ for entry in entries:
     print("salt is " , salt)
     print("hash_value is " , hash_value)
     start_time = time.time()
-    password = crack_password(user, salt, hash_value, word_list)
+    password = crack_password(user, work_factor, salt, hash_value, word_list)
     end_time = time.time()
 
     if password:
