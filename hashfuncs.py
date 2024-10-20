@@ -1,6 +1,7 @@
 import hashlib
 import random
 import string
+import time
 
 def hashSHA256(input_string):
     # Create a hash object
@@ -41,11 +42,13 @@ def collisionSHA256(string_length, bits_to_truncate_to):
 if __name__ == "__main__":
     # **********Task 1 (a)**********
     init_string = "Hey im in CSC 321, this hacking stuff is cool!"
-    print(f"TASK 1(a)\nHash of string '{init_string}' is: {hashSHA256(init_string)}\n")
+    init_string_2 = "Hello guys I like going out to eat"
+    print(f"TASK 1(a)\nHash of string '{init_string}' in hex is: {hashSHA256(init_string)}\n")
+    print(f"Hash of string '{init_string_2}' in hex is: {hashSHA256(init_string_2)}\n")
 
     # **********Task 1 (b)**********
     # Hamming distance between two strings is 1 bit
-    pairs = [("hello", "yello"), ("hello", "hella"), ("bet", "set"), ("sack", "hack")]
+    pairs = [("11010100", "11010101"), ("110101010010", "110101010011"), ("110101010", "110101011")]
     print("TASK 1(b)")
     for pair in pairs:
         hash1 = hashSHA256(pair[0])
@@ -61,5 +64,9 @@ if __name__ == "__main__":
     
     # Find collisions with random strings given a string length and number of bits to truncate to
     string_length = 20
+    start_time = time.time()
     output = collisionSHA256(string_length, bits_to_truncate_to)
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+    print(f"Time taken to find collision: {elapsed_time} seconds")
     print(f"Collision found between strings: {output[0], output[1]},\nand their hashes are: {output[2], output[3]} respectively")
