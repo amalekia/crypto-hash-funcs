@@ -17,9 +17,10 @@ def hashSHA256_truncated(input_str, bits):
     if bits < 8 or bits > 50:
         raise ValueError("Bits should be between 8 and 50")
     # Hash the input string
-    sha256_hash = bin(int.from_bytes(hashlib.sha256(input_str.encode('utf-8')).digest(), 'big'))[2:]
+    sha256_hash = hashlib.sha256(input_str.encode('utf-8')).digest()
+    sha256_hash_bin = bin(int.from_bytes(sha256_hash, 'big'))[2:]
     # Truncate the hash to the specified number of bits
-    truncated_hash = sha256_hash[:bits]
+    truncated_hash = sha256_hash_bin[:bits]
     return truncated_hash
 
 def collisionSHA256(string_length, bits_to_truncate_to):
